@@ -1,6 +1,8 @@
 package ru.alexrufov.mytwitter.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import ru.alexrufov.mytwitter.domain.Message;
+import ru.alexrufov.mytwitter.domain.User;
 import ru.alexrufov.mytwitter.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +32,8 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String add(@RequestParam String text, @RequestParam String tag, Map<String, Object> model) {
-        Message message = new Message(text, tag);
+    public String add(@AuthenticationPrincipal User user, @RequestParam String text, @RequestParam String tag, Map<String, Object> model) {
+        Message message = new Message(text, tag, user);
 
         messageRepository.save(message);
 
